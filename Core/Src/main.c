@@ -26,7 +26,9 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-
+#include <string.h>
+#include <stdio.h>
+#include "RingBuffer.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -49,7 +51,12 @@
 /* USER CODE BEGIN PV */
 uint8_t buff[LEN]; /*** GPIO DMA (Parallel Input) Buffer ***/
 uint8_t txBuff[TXLEN]; /*** UART Buffer ***/
-uint8_t transferComplete = 1;
+uint8_t transferComplete = 0;
+
+char Serial_TX_Data[16];
+
+RingBuffer Ring_Buffer_1;
+uint16_t Ring_Buffer_1_Length = 0, Ring_Buffer_1_FreeSpace = 0;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -97,6 +104,8 @@ int main(void)
   MX_TIM1_Init();
   MX_USART6_UART_Init();
   /* USER CODE BEGIN 2 */
+	RingBuffer_Init(&Ring_Buffer_1);
+	
 	
 	/*** Attach DMA callback functions ***/
 	htim1.hdma[TIM_DMA_ID_CC2]->XferHalfCpltCallback = HalfTransferComplete;
@@ -112,31 +121,38 @@ int main(void)
 	/*** Enable timer input capture ***/
 	HAL_TIM_IC_Start(&htim1, TIM_CHANNEL_2);
 	
+	sprintf(Serial_TX_Data, "%s", "Start\r\n");
+	HAL_UART_Transmit(&huart6, (uint8_t*)Serial_TX_Data, strlen(Serial_TX_Data), 0xFFFF);
+	
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
   {
+		Ring_Buffer_1_Length = RingBuffer_GetDataLength(&Ring_Buffer_1);
+		Ring_Buffer_1_FreeSpace = RingBuffer_GetFreeSpace(&Ring_Buffer_1);
 		if (transferComplete)
 		{
 			transferComplete = 0;
  
-			txBuff[0] = '#';
-			txBuff[1] = '\n';
-			for (int i = 0; i < LEN; i++)
-			{
-				for (int k = 0; k < 8; k++)
-				{
-					uint32_t val = buff[i] & (1u << k);
-					txBuff[(i * 9) + k + 2] = val == 0 ? '0' : '1';
-				}
-				txBuff[(i * 9) + 10] = '\n';
-			}
+//			txBuff[0] = '#';
+//			txBuff[1] = '\n';
+//			for (int i = 0; i < LEN; i++)
+//			{
+//				for (int k = 0; k < 8; k++)
+//				{
+//					uint32_t val = buff[i] & (1u << k);
+//					txBuff[(i * 9) + k + 2] = val == 0 ? '0' : '1';
+//				}
+//				txBuff[(i * 9) + 10] = '\n';
+//			}
  
-			HAL_UART_Transmit_IT(&huart6, txBuff, TXLEN);
+
+			RingBuffer_Read(&Ring_Buffer_1, txBuff, 10);
+			HAL_UART_Transmit_IT(&huart6, txBuff, 10);
 		}
-		HAL_GPIO_TogglePin(LED3_GPIO_Port, LED3_Pin);
+		//HAL_GPIO_TogglePin(LED3_GPIO_Port, LED3_Pin);
 		HAL_Delay(200);
     /* USER CODE END WHILE */
 
@@ -197,25 +213,31 @@ void SystemClock_Config(void)
 /* USER CODE BEGIN 4 */
 static void HalfTransferComplete(DMA_HandleTypeDef *DmaHandle)
 {
-	HAL_GPIO_TogglePin(LED1_GPIO_Port, LED1_Pin);
+	//HAL_GPIO_TogglePin(LED1_GPIO_Port, LED1_Pin);
+//	sprintf(Serial_TX_Data, "%s", "DMA HLF\r\n");
+//	HAL_UART_Transmit(&huart6, (uint8_t*)Serial_TX_Data, strlen(Serial_TX_Data), 0xFFFF);
 }
  
 static void TransferComplete(DMA_HandleTypeDef *DmaHandle)
 {
-	HAL_GPIO_TogglePin(LED2_GPIO_Port, LED2_Pin);
+	//HAL_GPIO_TogglePin(LED2_GPIO_Port, LED2_Pin);
+//	sprintf(Serial_TX_Data, "%s", "DMA CMPLT\r\n");
+//	HAL_UART_Transmit(&huart6, (uint8_t*)Serial_TX_Data, strlen(Serial_TX_Data), 0xFFFF);
  
 	transferComplete = 1;
 }
  
 static void TransferError(DMA_HandleTypeDef *DmaHandle)
 {
-	HAL_GPIO_TogglePin(LED3_GPIO_Port, LED3_Pin);
+	//HAL_GPIO_TogglePin(LED3_GPIO_Port, LED3_Pin);
+	sprintf(Serial_TX_Data, "%s", "DMA Error\r\n");
+	HAL_UART_Transmit(&huart6, (uint8_t*)Serial_TX_Data, strlen(Serial_TX_Data), 0xFFFF);
 }
  
 void HAL_UART_TxCpltCallback(UART_HandleTypeDef *huart)
 {
 	/*** Enable again DMA for a new transfer ***/
-	HAL_DMA_Start_IT(htim1.hdma[TIM_DMA_ID_CC2], (uint32_t) &GPIOF->IDR, (uint32_t) buff, LEN);
+	//HAL_DMA_Start_IT(htim1.hdma[TIM_DMA_ID_CC2], (uint32_t) &GPIOF->IDR, (uint32_t) buff, LEN);
 }
 /* USER CODE END 4 */
 

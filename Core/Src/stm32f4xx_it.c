@@ -23,16 +23,22 @@
 #include "stm32f4xx_it.h"
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
+#include <string.h>
+#include <stdio.h>
+#include "RingBuffer.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
 /* USER CODE BEGIN TD */
-
+extern char Serial_TX_Data[16];
 /* USER CODE END TD */
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
+extern RingBuffer Ring_Buffer_1;
 
+#define LEN 10
+extern uint8_t buff[LEN]; /*** GPIO DMA (Parallel Input) Buffer ***/
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -210,7 +216,10 @@ void DMA2_Stream2_IRQHandler(void)
   /* USER CODE END DMA2_Stream2_IRQn 0 */
   HAL_DMA_IRQHandler(&hdma_tim1_ch2);
   /* USER CODE BEGIN DMA2_Stream2_IRQn 1 */
-
+//	sprintf(Serial_TX_Data, "%s", "DMA IT\r\n");
+//	HAL_UART_Transmit(&huart6, (uint8_t*)Serial_TX_Data, strlen(Serial_TX_Data), 0xFFFF);
+	
+	RingBuffer_Write(&Ring_Buffer_1, buff, LEN);
   /* USER CODE END DMA2_Stream2_IRQn 1 */
 }
 
