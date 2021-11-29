@@ -58,7 +58,7 @@ void MX_TIM1_Init(void)
   {
     Error_Handler();
   }
-  sConfigIC.ICPolarity = TIM_INPUTCHANNELPOLARITY_RISING;
+  sConfigIC.ICPolarity = TIM_INPUTCHANNELPOLARITY_FALLING;
   sConfigIC.ICSelection = TIM_ICSELECTION_DIRECTTI;
   sConfigIC.ICPrescaler = TIM_ICPSC_DIV1;
   sConfigIC.ICFilter = 0;
@@ -88,12 +88,12 @@ void HAL_TIM_IC_MspInit(TIM_HandleTypeDef* tim_icHandle)
     /**TIM1 GPIO Configuration
     PA9     ------> TIM1_CH2
     */
-    GPIO_InitStruct.Pin = GPIO_PIN_9;
+    GPIO_InitStruct.Pin = DATA_A_CLK_Pin;
     GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
     GPIO_InitStruct.Pull = GPIO_NOPULL;
-    GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+    GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
     GPIO_InitStruct.Alternate = GPIO_AF1_TIM1;
-    HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
+    HAL_GPIO_Init(DATA_A_CLK_GPIO_Port, &GPIO_InitStruct);
 
     /* TIM1 DMA Init */
     /* TIM1_CH2 Init */
@@ -105,7 +105,7 @@ void HAL_TIM_IC_MspInit(TIM_HandleTypeDef* tim_icHandle)
     hdma_tim1_ch2.Init.PeriphDataAlignment = DMA_PDATAALIGN_BYTE;
     hdma_tim1_ch2.Init.MemDataAlignment = DMA_MDATAALIGN_BYTE;
     hdma_tim1_ch2.Init.Mode = DMA_CIRCULAR;
-    hdma_tim1_ch2.Init.Priority = DMA_PRIORITY_LOW;
+    hdma_tim1_ch2.Init.Priority = DMA_PRIORITY_HIGH;
     hdma_tim1_ch2.Init.FIFOMode = DMA_FIFOMODE_DISABLE;
     if (HAL_DMA_Init(&hdma_tim1_ch2) != HAL_OK)
     {
@@ -134,7 +134,7 @@ void HAL_TIM_IC_MspDeInit(TIM_HandleTypeDef* tim_icHandle)
     /**TIM1 GPIO Configuration
     PA9     ------> TIM1_CH2
     */
-    HAL_GPIO_DeInit(GPIOA, GPIO_PIN_9);
+    HAL_GPIO_DeInit(DATA_A_CLK_GPIO_Port, DATA_A_CLK_Pin);
 
     /* TIM1 DMA DeInit */
     HAL_DMA_DeInit(tim_icHandle->hdma[TIM_DMA_ID_CC2]);

@@ -74,6 +74,8 @@ void Error_Handler(void);
 #define DATA_A_6_GPIO_Port GPIOF
 #define DATA_A_7_Pin GPIO_PIN_7
 #define DATA_A_7_GPIO_Port GPIOF
+#define DATA_A_CLK_Pin GPIO_PIN_9
+#define DATA_A_CLK_GPIO_Port GPIOA
 #define LED1_Pin GPIO_PIN_0
 #define LED1_GPIO_Port GPIOD
 #define LED2_Pin GPIO_PIN_1
@@ -81,7 +83,7 @@ void Error_Handler(void);
 #define LED3_Pin GPIO_PIN_14
 #define LED3_GPIO_Port GPIOG
 /* USER CODE BEGIN Private defines */
-
+#define GPIO_Buffer_Size 188
 /* USER CODE END Private defines */
 
 #ifdef __cplusplus

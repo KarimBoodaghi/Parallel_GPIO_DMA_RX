@@ -25,20 +25,18 @@
 /* USER CODE BEGIN Includes */
 #include <string.h>
 #include <stdio.h>
-#include "RingBuffer.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
 /* USER CODE BEGIN TD */
-extern char Serial_TX_Data[16];
 /* USER CODE END TD */
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
-extern RingBuffer Ring_Buffer_1;
 
-#define LEN 10
-extern uint8_t buff[LEN]; /*** GPIO DMA (Parallel Input) Buffer ***/
+
+extern uint8_t GPIO_Buffer[GPIO_Buffer_Size]; /*** GPIO DMA (Parallel Input) Buffer ***/
+
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -63,7 +61,6 @@ extern uint8_t buff[LEN]; /*** GPIO DMA (Parallel Input) Buffer ***/
 
 /* External variables --------------------------------------------------------*/
 extern DMA_HandleTypeDef hdma_tim1_ch2;
-extern UART_HandleTypeDef huart6;
 /* USER CODE BEGIN EV */
 
 /* USER CODE END EV */
@@ -212,29 +209,13 @@ void SysTick_Handler(void)
 void DMA2_Stream2_IRQHandler(void)
 {
   /* USER CODE BEGIN DMA2_Stream2_IRQn 0 */
-
+	
+	HAL_GPIO_TogglePin(LED3_GPIO_Port, LED3_Pin);
+	
   /* USER CODE END DMA2_Stream2_IRQn 0 */
   HAL_DMA_IRQHandler(&hdma_tim1_ch2);
   /* USER CODE BEGIN DMA2_Stream2_IRQn 1 */
-//	sprintf(Serial_TX_Data, "%s", "DMA IT\r\n");
-//	HAL_UART_Transmit(&huart6, (uint8_t*)Serial_TX_Data, strlen(Serial_TX_Data), 0xFFFF);
-	
-	RingBuffer_Write(&Ring_Buffer_1, buff, LEN);
   /* USER CODE END DMA2_Stream2_IRQn 1 */
-}
-
-/**
-  * @brief This function handles USART6 global interrupt.
-  */
-void USART6_IRQHandler(void)
-{
-  /* USER CODE BEGIN USART6_IRQn 0 */
-
-  /* USER CODE END USART6_IRQn 0 */
-  HAL_UART_IRQHandler(&huart6);
-  /* USER CODE BEGIN USART6_IRQn 1 */
-
-  /* USER CODE END USART6_IRQn 1 */
 }
 
 /* USER CODE BEGIN 1 */
