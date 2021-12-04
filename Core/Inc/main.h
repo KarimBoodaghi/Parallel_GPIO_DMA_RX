@@ -76,6 +76,8 @@ void Error_Handler(void);
 #define DATA_A_7_GPIO_Port GPIOF
 #define DATA_A_CLK_Pin GPIO_PIN_9
 #define DATA_A_CLK_GPIO_Port GPIOA
+#define DATA_A_SYNC_Pin GPIO_PIN_10
+#define DATA_A_SYNC_GPIO_Port GPIOA
 #define LED1_Pin GPIO_PIN_0
 #define LED1_GPIO_Port GPIOD
 #define LED2_Pin GPIO_PIN_1

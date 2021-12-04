@@ -90,15 +90,9 @@ int main(void)
   MX_DMA_Init();
   MX_TIM1_Init();
   /* USER CODE BEGIN 2 */
- 
-	/*** Start DMA in interrupt mode, specify source and destination ***/
-	HAL_DMA_Start_IT(htim1.hdma[TIM_DMA_ID_CC2], (uint32_t) &GPIOF->IDR, (uint32_t) GPIO_Buffer, GPIO_Buffer_Size);
- 
-	/*** Enable timer to trigger DMA transfer - CC2DE bit ***/
-	__HAL_TIM_ENABLE_DMA(&htim1, TIM_DMA_CC2);
- 
-	/*** Enable timer input capture ***/
-	HAL_TIM_IC_Start_IT(&htim1, TIM_CHANNEL_2);
+
+	/*** Enable timer input capture for SYNC Pin (PA10) ***/
+	HAL_TIM_IC_Start_IT(&htim1, TIM_CHANNEL_3);
 	
   /* USER CODE END 2 */
 

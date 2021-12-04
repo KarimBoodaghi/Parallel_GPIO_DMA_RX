@@ -61,6 +61,7 @@ extern uint8_t GPIO_Buffer[GPIO_Buffer_Size]; /*** GPIO DMA (Parallel Input) Buf
 
 /* External variables --------------------------------------------------------*/
 extern DMA_HandleTypeDef hdma_tim1_ch2;
+extern TIM_HandleTypeDef htim1;
 /* USER CODE BEGIN EV */
 
 /* USER CODE END EV */
@@ -204,14 +205,38 @@ void SysTick_Handler(void)
 /******************************************************************************/
 
 /**
+  * @brief This function handles TIM1 capture compare interrupt.
+  */
+void TIM1_CC_IRQHandler(void)
+{
+  /* USER CODE BEGIN TIM1_CC_IRQn 0 */
+	if (__HAL_TIM_GET_FLAG(&htim1, TIM_FLAG_CC3) != RESET)
+	{
+		if (__HAL_TIM_GET_IT_SOURCE(&htim1, TIM_IT_CC3) != RESET)
+		{
+			/*** Start DMA in interrupt mode, specify source and destination ***/
+			HAL_DMA_Start_IT(htim1.hdma[TIM_DMA_ID_CC2], (uint32_t) &GPIOF->IDR, (uint32_t) GPIO_Buffer, GPIO_Buffer_Size);
+
+			/*** Enable timer to trigger DMA transfer - CC2DE bit ***/
+			__HAL_TIM_ENABLE_DMA(&htim1, TIM_DMA_CC2);
+			
+			/*** Enable timer input capture SCLK Pin (PA9) ***/
+			HAL_TIM_IC_Start_IT(&htim1, TIM_CHANNEL_2);
+		}
+	}
+  /* USER CODE END TIM1_CC_IRQn 0 */
+  HAL_TIM_IRQHandler(&htim1);
+  /* USER CODE BEGIN TIM1_CC_IRQn 1 */
+
+  /* USER CODE END TIM1_CC_IRQn 1 */
+}
+
+/**
   * @brief This function handles DMA2 stream2 global interrupt.
   */
 void DMA2_Stream2_IRQHandler(void)
 {
   /* USER CODE BEGIN DMA2_Stream2_IRQn 0 */
-	
-	HAL_GPIO_TogglePin(LED3_GPIO_Port, LED3_Pin);
-	
   /* USER CODE END DMA2_Stream2_IRQn 0 */
   HAL_DMA_IRQHandler(&hdma_tim1_ch2);
   /* USER CODE BEGIN DMA2_Stream2_IRQn 1 */
@@ -219,6 +244,28 @@ void DMA2_Stream2_IRQHandler(void)
 }
 
 /* USER CODE BEGIN 1 */
+//void HAL_TIM_IC_CaptureCallback(TIM_HandleTypeDef *htim)
+//{
+//	if(htim->Instance == TIM1)
+//	{
+//		if (__HAL_TIM_GET_FLAG(htim, TIM_FLAG_CC3) != RESET)
+//		{
+//			if (__HAL_TIM_GET_IT_SOURCE(htim, TIM_IT_CC3) != RESET)
+//			{
+//				HAL_GPIO_TogglePin(LED3_GPIO_Port, LED3_Pin);
+//				
+//				/*** Start DMA in interrupt mode, specify source and destination ***/
+//				HAL_DMA_Start_IT(htim1.hdma[TIM_DMA_ID_CC2], (uint32_t) &GPIOF->IDR, (uint32_t) GPIO_Buffer, GPIO_Buffer_Size);
+
+//				/*** Enable timer to trigger DMA transfer - CC2DE bit ***/
+//				__HAL_TIM_ENABLE_DMA(&htim1, TIM_DMA_CC2);
+//				
+//				/*** Enable timer input capture SCLK Pin (PA9) ***/
+//				HAL_TIM_IC_Start_IT(&htim1, TIM_CHANNEL_2);
+//			}
+//		}
+//  }
+//}
 
 /* USER CODE END 1 */
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/
