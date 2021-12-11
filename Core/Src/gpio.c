@@ -58,8 +58,8 @@ void MX_GPIO_Init(void)
 
   /*Configure GPIO pins : PFPin PFPin PFPin PFPin
                            PFPin PFPin PFPin PFPin */
-  GPIO_InitStruct.Pin = DATA_A_0_Pin|DATA_A_1_Pin|DATA_A_2_Pin|DATA_A_3_Pin
-                          |DATA_A_4_Pin|DATA_A_5_Pin|DATA_A_6_Pin|DATA_A_7_Pin;
+  GPIO_InitStruct.Pin = DATA2_0_Pin|DATA2_1_Pin|DATA2_2_Pin|DATA2_3_Pin
+                          |DATA2_4_Pin|DATA2_5_Pin|DATA2_6_Pin|DATA2_7_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
   GPIO_InitStruct.Pull = GPIO_PULLDOWN;
   HAL_GPIO_Init(GPIOF, &GPIO_InitStruct);

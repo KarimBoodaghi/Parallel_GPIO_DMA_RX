@@ -58,26 +58,26 @@ void Error_Handler(void);
 /* USER CODE END EFP */
 
 /* Private defines -----------------------------------------------------------*/
-#define DATA_A_0_Pin GPIO_PIN_0
-#define DATA_A_0_GPIO_Port GPIOF
-#define DATA_A_1_Pin GPIO_PIN_1
-#define DATA_A_1_GPIO_Port GPIOF
-#define DATA_A_2_Pin GPIO_PIN_2
-#define DATA_A_2_GPIO_Port GPIOF
-#define DATA_A_3_Pin GPIO_PIN_3
-#define DATA_A_3_GPIO_Port GPIOF
-#define DATA_A_4_Pin GPIO_PIN_4
-#define DATA_A_4_GPIO_Port GPIOF
-#define DATA_A_5_Pin GPIO_PIN_5
-#define DATA_A_5_GPIO_Port GPIOF
-#define DATA_A_6_Pin GPIO_PIN_6
-#define DATA_A_6_GPIO_Port GPIOF
-#define DATA_A_7_Pin GPIO_PIN_7
-#define DATA_A_7_GPIO_Port GPIOF
-#define DATA_A_CLK_Pin GPIO_PIN_9
-#define DATA_A_CLK_GPIO_Port GPIOA
-#define DATA_A_SYNC_Pin GPIO_PIN_10
-#define DATA_A_SYNC_GPIO_Port GPIOA
+#define DATA2_0_Pin GPIO_PIN_0
+#define DATA2_0_GPIO_Port GPIOF
+#define DATA2_1_Pin GPIO_PIN_1
+#define DATA2_1_GPIO_Port GPIOF
+#define DATA2_2_Pin GPIO_PIN_2
+#define DATA2_2_GPIO_Port GPIOF
+#define DATA2_3_Pin GPIO_PIN_3
+#define DATA2_3_GPIO_Port GPIOF
+#define DATA2_4_Pin GPIO_PIN_4
+#define DATA2_4_GPIO_Port GPIOF
+#define DATA2_5_Pin GPIO_PIN_5
+#define DATA2_5_GPIO_Port GPIOF
+#define DATA2_6_Pin GPIO_PIN_6
+#define DATA2_6_GPIO_Port GPIOF
+#define DATA2_7_Pin GPIO_PIN_7
+#define DATA2_7_GPIO_Port GPIOF
+#define DATA2_CLK_Pin GPIO_PIN_9
+#define DATA2_CLK_GPIO_Port GPIOA
+#define DATA2_SYNC_Pin GPIO_PIN_10
+#define DATA2_SYNC_GPIO_Port GPIOA
 #define LED1_Pin GPIO_PIN_0
 #define LED1_GPIO_Port GPIOD
 #define LED2_Pin GPIO_PIN_1

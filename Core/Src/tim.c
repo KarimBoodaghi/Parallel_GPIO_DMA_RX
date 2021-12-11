@@ -94,19 +94,19 @@ void HAL_TIM_IC_MspInit(TIM_HandleTypeDef* tim_icHandle)
     PA9     ------> TIM1_CH2
     PA10     ------> TIM1_CH3
     */
-    GPIO_InitStruct.Pin = DATA_A_CLK_Pin;
+    GPIO_InitStruct.Pin = DATA2_CLK_Pin;
     GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
     GPIO_InitStruct.Pull = GPIO_NOPULL;
     GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
     GPIO_InitStruct.Alternate = GPIO_AF1_TIM1;
-    HAL_GPIO_Init(DATA_A_CLK_GPIO_Port, &GPIO_InitStruct);
+    HAL_GPIO_Init(DATA2_CLK_GPIO_Port, &GPIO_InitStruct);
 
-    GPIO_InitStruct.Pin = DATA_A_SYNC_Pin;
+    GPIO_InitStruct.Pin = DATA2_SYNC_Pin;
     GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
     GPIO_InitStruct.Pull = GPIO_NOPULL;
     GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
     GPIO_InitStruct.Alternate = GPIO_AF1_TIM1;
-    HAL_GPIO_Init(DATA_A_SYNC_GPIO_Port, &GPIO_InitStruct);
+    HAL_GPIO_Init(DATA2_SYNC_GPIO_Port, &GPIO_InitStruct);
 
     /* TIM1 DMA Init */
     /* TIM1_CH2 Init */
@@ -151,7 +151,7 @@ void HAL_TIM_IC_MspDeInit(TIM_HandleTypeDef* tim_icHandle)
     PA9     ------> TIM1_CH2
     PA10     ------> TIM1_CH3
     */
-    HAL_GPIO_DeInit(GPIOA, DATA_A_CLK_Pin|DATA_A_SYNC_Pin);
+    HAL_GPIO_DeInit(GPIOA, DATA2_CLK_Pin|DATA2_SYNC_Pin);
 
     /* TIM1 DMA DeInit */
     HAL_DMA_DeInit(tim_icHandle->hdma[TIM_DMA_ID_CC2]);
